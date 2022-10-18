@@ -3,6 +3,7 @@ package models
 import (
 	"github.com/adeemgoogle/go/pkg/config"
 	"github.com/jinzhu/gorm"
+	_ "github.com/lib/pq"
 )
 
 var db *gorm.DB
@@ -16,7 +17,7 @@ type Book struct {
 
 func init() {
 	config.Connect()
-	db = config.GetDB()
+	db = config.Connect()
 	db.AutoMigrate(&Book{})
 
 }

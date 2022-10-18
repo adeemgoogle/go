@@ -1,28 +1,22 @@
 package config
 
 import (
-	"fmt"
-	_ "github.com/go-sql-driver/mysql"
+	"github.com/adeemgoogle/go/pkg/models"
 	"github.com/jinzhu/gorm"
-	_ "github.com/jinzhu/gorm/dialects/mysql"
+	_ "github.com/jinzhu/gorm/dialects/postgres"
+	"log"
 )
 
-var (
-	db *gorm.DB
-)
+func Connect() *gorm.DB {
+	dbURL := "postgres://pg:pass@localhost:5432/crud"
 
-func Connect() {
-	fmt.Println("Connecting to database...")
-	
-	connString := "Adema:YES@tcp(127.0.0.1:3306)/databaseName"
-	d, err := gorm.Open("mysql", connString)
+	db, err := gorm.Open(dbURL)
+
 	if err != nil {
-		panic(err)
+		log.Fatalln(err)
 	}
-	db = d
 
-}
+	db.AutoMigrate(&models.Book{})
 
-func GetDB() *gorm.DB {
 	return db
 }
